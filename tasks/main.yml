@@ -1,0 +1,26 @@
+---
+
+- name: Upgrade System Packages
+  apt: force=yes update_cache=yes upgrade=yes
+  register: uu_system_updated
+
+- name: Install System Packages
+  when: system_updated | success
+  apt: pkg={{ item }} state=present force=yes
+  with_items: "{{ uu_system_packages }}"
+  register: system_packages_installed
+
+- name: Install Sendmail for notifications
+  when: uu_send_email
+  apt: pkg={{ uu_email_package }} state=present force=yes
+
+- name: Place unattended upgrades config files
+  template: >
+    src={{ item.src }}
+    dest={{ item.dest }}
+    owner=root
+    group=root
+    mode=0600
+  with_items:
+    - { src: 50unattended-upgrades.j2, dest: /etc/apt/apt.conf.d/50unattended-upgrades }
+    - { src: 02periodic.j2, dest: /etc/apt/apt.conf.d/02periodic }

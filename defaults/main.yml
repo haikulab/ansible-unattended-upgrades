@@ -1,0 +1,18 @@
+---
+uu_system_packages:
+  - unattended-upgrades
+
+uu_email_package: sendmail
+
+uu_reboot: false
+uu_send_email: false
+uu_email_to: root@localhost
+uu_email_on_error_only: false
+
+# Scheduling Controls
+## used in templates/02periodic.js
+## options are
+uu_update_package_lists: 1
+uu_download_upgradeable_packages: 1
+uu_autoclean_interval: 7
+uu_unattended_upgrade: 1
