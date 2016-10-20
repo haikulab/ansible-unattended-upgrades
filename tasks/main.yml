@@ -5,10 +5,9 @@
   register: uu_system_updated
 
 - name: Install System Packages
-  when: system_updated | success
+  when: uu_system_updated | success
   apt: pkg={{ item }} state=present force=yes
   with_items: "{{ uu_system_packages }}"
-  register: system_packages_installed
 
 - name: Install Sendmail for notifications
   when: uu_send_email
